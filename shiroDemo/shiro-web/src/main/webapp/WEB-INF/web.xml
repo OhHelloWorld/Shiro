@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:spring/spring.xml</param-value>
+    </context-param>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--
+      - Declare Spring request listener which sets up the required RequestAttributes
+      - to support Springs and Cocoon custom bean scopes like the request scope or the
+      - session scope.
+      -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+    <!-- Servlet Configuration ========================================== -->
+
+    <!--
+      - Servlet that dispatches requests to the Spring managed block servlets
+      -->
+    <servlet>
+        <description>Cocoon blocks dispatcher</description>
+        <display-name>DispatcherServlet</display-name>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>org.apache.cocoon.servletservice.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- URL space mappings ============================================= -->
+
+    <!--
+      - Cocoon handles all the URL space assigned to the webapp using its sitemap.
+      - It is recommended to leave it unchanged. Under some circumstances though
+      - (like integration with proprietary webapps or servlets) you might have
+      - to change this parameter.
+      -->
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
